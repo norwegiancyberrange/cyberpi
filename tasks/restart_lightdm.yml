@@ -1,6 +1,0 @@
----
-# sudo systemctl restart lightdm.service
-- name: Restart lightdm
-  service:
-    name: lightdm
-    state: restarted
