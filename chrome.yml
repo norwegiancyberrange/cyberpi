@@ -13,20 +13,36 @@
   # TODO: http://stackoverflow.com/questions/7769061/how-to-add-custom-accept-languages-to-chrome-for-pseudolocalization-testing
 
   - name: HDMI force hotplug
-    action: lineinfile dest=/boot/config.txt regexp="hdmi_force_hotplug" line="hdmi_force_hotplug=1" state=present
+    lineinfile:
+      path: /boot/config.txt
+      regex: "hdmi_force_hotplug"
+      line: "hdmi_force_hotplug=1"
+      state: present
     notify: Reboot
 
   # disable hdmi drive
   - name: HDMI normal mode
-    action: lineinfile dest=/boot/config.txt regexp="hdmi_drive" line="#hdmi_drive=2" state=present
+    lineinfile:
+      path: /boot/config.txt
+      regex: "hdmi_drive"
+      line: "#hdmi_drive=2"
+      state: present
     notify: Reboot
 
   - name: HDMI group
-    action: lineinfile dest=/boot/config.txt regexp="hdmi_group" line="hdmi_group=2" state=present
+    lineinfile:
+      path: /boot/config.txt
+      regex: "hdmi_group"
+      line: "hdmi_group=2"
+      state: present
     notify: Reboot
 
   - name: HDMI mode FullHD
-    action: lineinfile dest=/boot/config.txt regexp="hdmi_mode" line="hdmi_mode=82" state=present
+    lineinfile:
+      path: /boot/config.txt
+      regex: "hdmi_mode"
+      line: "hdmi_mode=82"
+      state: present
     notify: Reboot
 
   - name: Install packages
@@ -37,17 +53,13 @@
       packages:
       - unclutter
       - ttf-mscorefonts-installer
-    notify: Restart lightdm
-
-  - name: Create LXDE autostart configuration
-    template:
-      src: "templates/autostart.j2"
-      dest: "/home/{{ autostart_user }}/.config/lxsession/LXDE-pi/autostart"
-    notify: Restart lightdm
-
-  - name: Disable lightdm screensaver
-    action: lineinfile dest=/etc/lightdm/lightdm.conf regexp="xserver-command=" line="xserver-command=X -s 0 -dpms" state=present
-    notify: Restart lightdm
+      - vlc
+      - xinit
+      - openbox
+      - hsetroot
+      - x11vnc
+      - ntp
+      - ntpdate
 
   handlers:
 
@@ -56,6 +68,3 @@
     async: 1
     poll: 0
     ignore_errors: true
-
-  - name: Restart lightdm
-    include: tasks/restart_lightdm.yml
