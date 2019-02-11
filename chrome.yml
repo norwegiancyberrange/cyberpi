@@ -30,8 +30,11 @@
     notify: Reboot
 
   - name: Install packages
-    apt: pkg={{item}} state=installed
-    with_items:
+    apt: 
+      state: present
+      name: "{{ packages }}"
+    vars:
+      packages:
       - unclutter
       - ttf-mscorefonts-installer
     notify: Restart lightdm

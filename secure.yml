@@ -49,9 +49,8 @@
       notify: Restart ssh
 
     - name: Install required packages
-      apt: state=installed pkg={{ item }}
-      with_items:
-      - "{{ required_packages }}"
+      apt: 
+        name: "{{ required_packages }}"
 
     - name: Allow ssh and http(s) connections
       ufw: rule=allow port={{ item }}
