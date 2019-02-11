@@ -1,6 +1,6 @@
 ---
-server_user_name: co
-server_user_password: raspberry
+ansible_user: co
+ansible_ssh_pass: raspberry
 user_public_keys:
   - ~/.ssh/id_rsa.pub
 autostart_user: pi
