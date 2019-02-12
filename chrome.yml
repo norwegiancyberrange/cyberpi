@@ -95,6 +95,11 @@
       dest: "/home/{{ autostart_user }}/.config/openbox/autostart.sh"
     notify: Restart getty
 
+  - name: Copy background image
+    copy:
+      src: files/background.png
+      dest: /home/{{ autostart_user|quote }}/background.png
+
   - name: Ensure getty service override dir exists
     file:
       path: /etc/systemd/system/getty@tty1.service.d/
