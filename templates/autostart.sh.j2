@@ -2,6 +2,7 @@ xset s off      # don't activate screensaver
 xset -dpms      # disable DPMS (Energy Star) features
 xset s noblank  # don't blank the video device
 unclutter &     # hide cursor when idle
-sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' ~/.config/chromium/Default/Preferences
-chromium-browser --start-maximized --disable-translate --disable-infobars --disable-suggestions-service --kiosk {{ chrome_url }} &
-x11vnc -ssl -forever -rfbauth ~/.x11vnc/passwd -display :0 &
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
+chromium-browser --start-maximized --disable-translate --disable-infobars --disable-suggestions-service --kiosk --app={{ chrome_url }} &
+x11vnc -ssl SAVE -forever -rfbauth ~/.x11vnc/passwd -display :0 &

@@ -93,6 +93,7 @@
     template:
       src: "templates/autostart.sh.j2"
       dest: "/home/{{ autostart_user }}/.config/openbox/autostart.sh"
+    notify: Restart getty
 
   - name: Ensure getty service override dir exists
     file:
