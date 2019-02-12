@@ -91,14 +91,19 @@
 
   - name: Create openbox autostart configuration
     template:
-      src: "templates/autostart.sh.j2"
+      src: templates/autostart.sh.j2
       dest: "/home/{{ autostart_user }}/.config/openbox/autostart.sh"
     notify: Restart getty
 
   - name: Copy background image
     copy:
       src: files/background.png
-      dest: /home/{{ autostart_user|quote }}/background.png
+      dest: "/home/{{ autostart_user|quote }}/background.png"
+
+  - name: Create reload.html
+    template:
+      src: templates/reload.html.j2
+      dest: "/home/{{ autostart_user }}/reload.html"
 
   - name: Ensure getty service override dir exists
     file:
