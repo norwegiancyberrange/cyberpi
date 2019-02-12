@@ -60,6 +60,56 @@
       - x11vnc
       - ntp
       - ntpdate
+      - chromium-browser
+      - pulseaudio
+  
+  - name: Ensure X starts on login
+    lineinfile:
+      path: /home/{{ autostart_user }}/.bash_profile
+      line: "exec startx"
+      state: present
+      create: yes
+
+  - name: Ensure x11vnc config dir exists
+    file:
+      path: /home/{{ autostart_user }}/.x11vnc/
+      state: directory
+      owner: "{{ autostart_user }}"
+      group: "{{ autostart_user }}"
+
+  - name: Ensure x11vnc password is set
+    shell: sudo -u {{ autostart_user|quote}}  x11vnc -storepasswd {{ autostart_vnc_pass|quote }}  /home/{{ autostart_user|quote }}/.x11vnc/passwd
+    args:
+      creates: /home/{{ autostart_user }}/.x11vnc/passwd
+  
+  - name: Ensure openbox config dir exists
+    file:
+      path: /home/{{ autostart_user }}/.config/openbox/
+      state: directory
+      owner: "{{ autostart_user }}"
+      group: "{{ autostart_user }}"
+
+  - name: Create openbox autostart configuration
+    template:
+      src: "templates/autostart.sh.j2"
+      dest: "/home/{{ autostart_user }}/.config/openbox/autostart.sh"
+
+  - name: Ensure getty service override dir exists
+    file:
+      path: /etc/systemd/system/getty@tty1.service.d/
+      state: directory
+
+  - name: Setup autologin user
+    lineinfile:
+      path: /etc/systemd/system/getty@tty1.service.d/override.conf
+      line: "{{ item.line }}"
+      state: present
+      create: yes
+    with_items:
+      - { line: "[Service]" }
+      - { line: "ExecStart=" }
+      - { line: "ExecStart=-/sbin/agetty --autologin {{ autostart_user }} --noclear %I $TERM" }
+    notify: Restart getty
 
   handlers:
 
@@ -68,3 +118,6 @@
     async: 1
     poll: 0
     ignore_errors: true
+
+  - name: Restart getty
+    include: tasks/restart_getty.yml

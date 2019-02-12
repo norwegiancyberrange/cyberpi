@@ -1,0 +1,6 @@
+---
+# sudo systemctl restart getty@tty1.service
+- name: Restart getty
+  service:
+    name: getty@tty1.service
+    state: restarted
