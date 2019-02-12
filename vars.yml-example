@@ -1,17 +1,16 @@
 ---
 ansible_user: co
-ansible_ssh_pass: raspberry
+ansible_ssh_pass: changeme
 user_public_keys:
   - ~/.ssh/id_rsa.pub
 autostart_user: pi
+autostart_vnc_pass: changemetoo
 
 required_packages:
   - ufw
-  - joe
 
-timezone: Europe/Berlin
+timezone: Europe/Oslo
 
 ufw_allowed_ports:
   - 22
-  - 80
-  - 443
+  - 5900
