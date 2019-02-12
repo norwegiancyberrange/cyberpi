@@ -121,6 +121,11 @@
       - { line: "ExecStart=" }
       - { line: "ExecStart=-/sbin/agetty --autologin {{ autostart_user }} --noclear %I $TERM" }
     notify: Restart getty
+        
+  - name: Remove the nopassword-config for the pi user if it exists
+    file:
+      path: "/etc/sudoers.d/010_pi-nopasswd"
+      state: absent
 
   handlers:
 

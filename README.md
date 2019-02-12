@@ -15,8 +15,8 @@ Start with a default Raspbian image with SSH enabled and the password set to som
 
 ### 1. Setup SD card image
 
-Burn the Raspbian Jessie image on to your SD card. [Etcher](https://etcher.io/) can do this, unless you know your way around dd.
-Connect your Pi to the network via ethernet cable, power it on and boot.
+Write the Raspbian Jessie image on to your SD card. [Etcher](https://etcher.io/) can do this, unless you know your way around dd.
+Connect your Pi to the network via ethernet cable, power it on and boot. Log on with username "pi" and password "raspberry", then run `sudo raspi-config` to change the password, and then go to `interfacing options` and enable the SSH server.
 
 If you create a valid `wpa_supplicant.conf` file and place in your boot partition the Pi copies it over using stock images (like Raspbian Jessie). The file disappears after it copies, but activates network on first boot so you should be able to find your Pi via nmap/ssh in your Wifi network.
 
@@ -38,7 +38,7 @@ user_public_keys:
 
 ### 4. First run, bootstrap and secure your Pis
 
-Use the user "pi" with the default password that you set during setup (the default password is "raspberry").
+Use the user "pi" with the default password that you set during setup.
 
 You may want to check that your Pis are responding on the ssh port:
 
@@ -46,7 +46,7 @@ You may want to check that your Pis are responding on the ssh port:
 $ ansible all -m ping -u pi -k
 ```
 
-Execute the secure.yml playbook to secure your Pis:
+Execute the bootstrap.yml playbook to secure your Pis:
 - sets hostname and timezone
 - creates a new sudo user with key login
 - locks down the pi account
@@ -55,10 +55,10 @@ Execute the secure.yml playbook to secure your Pis:
 - sets up ufw firewall
 
 ```
-$ ansible-playbook secure.yml -u pi -k
+$ ansible-playbook bootstrap.yml -e 'ansible_ssh_user=pi' -k
 ```
 
-After running the secure.yml playbook you can omit the username for Ansible and you won't be able to login with a password.
+After running the bootstrap.yml playbook you can omit the username for Ansible and you won't be able to login with a password.
 
 ### 5. Update Raspbian (optional)
 
