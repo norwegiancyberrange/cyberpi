@@ -51,6 +51,12 @@
         group: "{{ autostart_user }}"
         groups: audio,video,plugdev,games,users,input
         append: no
+    
+    - name: Remove the nopassword-config for the pi user if it exists
+      file:
+        path: "/etc/sudoers.d/010_pi-nopasswd"
+        state: absent
+      
       
     - name: Add authorized_keys for the user
       authorized_key: user={{ ansible_user }} key="{{ lookup('file', item) }}"
