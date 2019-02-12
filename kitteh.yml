@@ -1,5 +1,5 @@
 ---
-- name: Chrome autostart with URL
+- name: Set up kitteh client with target URL
   hosts: all
   become: yes
   become_user: root
