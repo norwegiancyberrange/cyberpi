@@ -95,6 +95,16 @@ Use the info.yml playbook to get some info about your Pi flock:
 $ ansible-playbook info.yml
 ```
 
+### 8. Log in with rdp client to inspect status of monitor
+
+You can visually inspect what is being viewed on the screen by logging in with an RDP client, either the built-in client on Linux or for instance with xfreerdp.
+
+If you're using a newer version of xfreerdp, you will have to supply two options to work around some bugs in the current xrdp server:
+
+```
+$ xfreerdp /relax-order-checks +glyph-cache /v:<ip-or-hostname>
+```
+
 ## License
 
 See [MIT License](LICENSE.txt)
