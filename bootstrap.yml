@@ -77,7 +77,7 @@
       apt: 
         name: "{{ required_packages }}"
 
-    - name: Allow ssh and http(s) connections
+    - name: Set up firewall
       ufw:
         rule: allow
         port: "{{ item }}"
