@@ -62,6 +62,7 @@
       - ntpdate
       - chromium-browser
       - pulseaudio
+      - xrdp
   
   - name: Ensure X starts on login
     lineinfile:
@@ -121,6 +122,12 @@
       - { line: "ExecStart=" }
       - { line: "ExecStart=-/sbin/agetty --autologin {{ autostart_user }} --noclear %I $TERM" }
     notify: Restart getty
+  
+  - name: Setup xrdp
+    copy:
+      src: files/xrdp.ini
+      dest: "/etc/xrdp/xrdp.ini"
+    notify: Restart xrdp
         
   - name: Remove the nopassword-config for the pi user if it exists
     file:
@@ -137,3 +144,6 @@
 
   - name: Restart getty
     include: tasks/restart_getty.yml
+  
+  - name: Restart xrdp
+    include: tasks/restart_xrdp.yml

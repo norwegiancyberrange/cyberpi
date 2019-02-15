@@ -13,4 +13,4 @@ timezone: Europe/Oslo
 
 ufw_allowed_ports:
   - 22
-  - 5900
+  - 3389

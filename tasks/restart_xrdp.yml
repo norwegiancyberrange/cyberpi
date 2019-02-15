@@ -1,0 +1,6 @@
+---
+# sudo systemctl restart xrdp
+- name: Restart xrdp
+  service:
+    name: xrdp
+    state: restarted
