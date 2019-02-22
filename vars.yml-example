@@ -4,7 +4,7 @@ ansible_ssh_pass: changeme
 user_public_keys:
   - ~/.ssh/id_rsa.pub
 autostart_user: pi
-autostart_vnc_pass: changemetoo
+vnc_pass: changemetoo
 
 required_packages:
   - ufw

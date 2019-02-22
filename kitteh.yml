@@ -79,7 +79,7 @@
       group: "{{ autostart_user }}"
 
   - name: Ensure x11vnc password is set
-    shell: sudo -u {{ autostart_user|quote}}  x11vnc -storepasswd {{ autostart_vnc_pass|quote }}  /home/{{ autostart_user|quote }}/.x11vnc/passwd
+    shell: sudo -u {{ autostart_user|quote}}  x11vnc -storepasswd {{ vnc_pass|quote }}  /home/{{ autostart_user|quote }}/.x11vnc/passwd
     args:
       creates: /home/{{ autostart_user }}/.x11vnc/passwd
   
