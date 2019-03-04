@@ -76,6 +76,13 @@
     - name: Install required packages
       apt: 
         name: "{{ required_packages }}"
+  
+    - name: Ensure a locale exists
+      locale_gen:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "{{ locales }}"
 
     - name: Set up firewall
       ufw:

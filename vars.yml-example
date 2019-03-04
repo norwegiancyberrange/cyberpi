@@ -9,6 +9,11 @@ vnc_pass: changemetoo
 required_packages:
   - ufw
 
+locales:
+  - nb_NO.UTF-8
+
+xkeyboardlayout: "no"
+
 timezone: Europe/Oslo
 
 ufw_allowed_ports:
