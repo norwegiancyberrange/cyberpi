@@ -94,7 +94,6 @@
     - name: Enable ufw/firewall
       ufw: 
         state: enabled
-        policy: deny
 
   handlers:
     - name: Restart ssh
