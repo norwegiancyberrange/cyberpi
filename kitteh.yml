@@ -55,6 +55,7 @@
       - ttf-mscorefonts-installer
       - vlc
       - xinit
+      - xserver-xorg-video-fbdev
       - openbox
       - hsetroot
       - x11vnc

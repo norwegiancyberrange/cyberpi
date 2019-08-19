@@ -9,7 +9,6 @@
   tasks:
     - name: Set Hostname
       hostname: name={{ pi_name }}
-      notify: Remove singleton
     
     - name: Fix Hostname in hosts file
       lineinfile:
@@ -72,6 +71,9 @@
         line: "PasswordAuthentication no"
         state: present
       notify: Restart ssh
+
+    - name: Fix buster from testing to stable release
+      command: apt-get --allow-releaseinfo-change update
 
     - name: Install required packages
       apt: 
