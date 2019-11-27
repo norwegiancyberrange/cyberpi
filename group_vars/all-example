@@ -25,3 +25,5 @@ timezone: Europe/Oslo
 ufw_allowed_ports:
   - 22
   - 3389
+
+ntpserver: pool.ntp.org

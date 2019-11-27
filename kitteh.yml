@@ -3,48 +3,8 @@
   hosts: all
   become: yes
   become_user: root
-  vars_files:
-    - vars.yml
 
   tasks:
-
-  # https://www.raspberrypi.org/documentation/configuration/config-txt.md
-  # TODO: http://unix.stackexchange.com/questions/6220/how-can-i-change-the-language-in-chromium
-  # TODO: http://stackoverflow.com/questions/7769061/how-to-add-custom-accept-languages-to-chrome-for-pseudolocalization-testing
-
-  - name: HDMI force hotplug
-    lineinfile:
-      path: /boot/config.txt
-      regex: "hdmi_force_hotplug"
-      line: "hdmi_force_hotplug=1"
-      state: present
-    notify: Reboot
-
-  # disable hdmi drive
-  - name: HDMI normal mode
-    lineinfile:
-      path: /boot/config.txt
-      regex: "hdmi_drive"
-      line: "#hdmi_drive=2"
-      state: present
-    notify: Reboot
-
-  - name: HDMI group
-    lineinfile:
-      path: /boot/config.txt
-      regex: "hdmi_group"
-      line: "hdmi_group=2"
-      state: present
-    notify: Reboot
-
-  - name: HDMI mode FullHD
-    lineinfile:
-      path: /boot/config.txt
-      regex: "hdmi_mode"
-      line: "hdmi_mode=82"
-      state: present
-    notify: Reboot
-
   - name: Install packages
     apt: 
       state: present
@@ -59,12 +19,18 @@
       - openbox
       - hsetroot
       - x11vnc
-      - ntp
-      - ntpdate
       - chromium-browser
       - pulseaudio
       - xrdp
       - cec-utils
+
+  - name: Ensure we're using the correct ntp server
+    lineinfile:
+      path: /etc/systemd/timesyncd.conf
+      regex: "NTP="
+      line: "NTP={{ ntpserver }}"
+      state: present
+    notify: Activate ntp
   
   - name: Ensure X starts on login
     lineinfile:
@@ -99,7 +65,7 @@
 
   - name: Copy background image
     copy:
-      src: files/background.png
+      src: files/background_ntnu.png
       dest: "/home/{{ autostart_user|quote }}/background.png"
 
   - name: Create reload.html
@@ -161,15 +127,11 @@
       state: absent
 
   handlers:
-
-  - name: Reboot
-    shell: sleep 2 && shutdown -r now "Ansible updates triggered"
-    async: 1
-    poll: 0
-    ignore_errors: true
-
   - name: Restart getty
     include: tasks/restart_getty.yml
   
   - name: Restart xrdp
     include: tasks/restart_xrdp.yml
+  
+  - name: Activate ntp
+    include: tasks/activate_ntp.yml

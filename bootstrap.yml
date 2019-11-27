@@ -3,8 +3,6 @@
   hosts: all
   become: yes
   become_user: root
-  vars_files:
-    - vars.yml
 
   tasks:
     - name: Set Hostname
@@ -59,7 +57,7 @@
     - name: Disallow root SSH access
       lineinfile:
         path: /etc/ssh/sshd_config
-        regex: "^PermitRootLogin"
+        regex: "PermitRootLogin"
         line: "PermitRootLogin no"
         state: present
       notify: Restart ssh
@@ -67,19 +65,19 @@
     - name: Disallow password authentication
       lineinfile:
         path: /etc/ssh/sshd_config
-        regex: "^PasswordAuthentication"
+        regex: "PasswordAuthentication"
         line: "PasswordAuthentication no"
         state: present
       notify: Restart ssh
 
-    - name: Fix buster from testing to stable release
-      command: apt-get --allow-releaseinfo-change update
+    - name: Flush handlers at this point
+      meta: flush_handlers
 
     - name: Install required packages
       apt: 
         name: "{{ required_packages }}"
   
-    - name: Ensure a locale exists
+    - name: Ensure locales are generated
       locale_gen:
         name: "{{ item }}"
         state: present
@@ -97,9 +95,52 @@
       ufw: 
         state: enabled
 
+    - name: HDMI force hotplug
+      lineinfile:
+        path: /boot/config.txt
+        regex: "hdmi_force_hotplug"
+        line: "hdmi_force_hotplug=1"
+        state: present
+      notify: Reboot
+
+    - name: HDMI normal mode
+      lineinfile:
+        path: /boot/config.txt
+        regex: "hdmi_drive"
+        line: "#hdmi_drive=2"
+        state: present
+      notify: Reboot
+
+    - name: HDMI group
+      lineinfile:
+        path: /boot/config.txt
+        regex: "hdmi_group"
+        line: "hdmi_group=2"
+        state: present
+      notify: Reboot
+
+    - name: HDMI mode FullHD
+      lineinfile:
+        path: /boot/config.txt
+        regex: "hdmi_mode"
+        line: "hdmi_mode=82"
+        state: present
+      notify: Reboot
+
+    - name: Underclock CPU to keep it from cooking
+      lineinfile:
+        path: /boot/config.txt
+        regex: "arm_freq"
+        line: "arm_freq=700"
+        state: present
+      notify: Reboot
+
   handlers:
     - name: Restart ssh
       service: name=ssh state=restarted
 
-    - name: Remove singleton
-      include: tasks/rm_chrome_singleton.yml
+    - name: Reboot
+      shell: sleep 2 && shutdown -r now "Ansible updates triggered"
+      async: 1
+      poll: 0
+      ignore_errors: true

@@ -1,4 +1,4 @@
 *.retry
 hosts
-vars.yml
 files/background_ntnu.png
+group_vars/all

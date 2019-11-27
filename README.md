@@ -27,7 +27,7 @@ Add the host variables `pi_name` and `chrome_url` to a file named `hosts`. They 
 
 ### 3. Set more variables
 
-Please set some required variables in vars.yml, which you might want to change. You should at least set the Ansible management user and the key. See also vars.yml-example.
+Please make a copy of group_vars/all-example to group_vars/all and change any variables to suit your needs. You should at least set the Ansible management user and the key.
 
 ```
 server_user_name: kiosk-admin
