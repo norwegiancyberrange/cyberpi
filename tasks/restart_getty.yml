@@ -1,6 +1,7 @@
 ---
 # sudo systemctl restart getty@tty1.service
 - name: Restart getty
-  service:
+  systemd:
     name: getty@tty1.service
     state: restarted
+    daemon_reload: yes
