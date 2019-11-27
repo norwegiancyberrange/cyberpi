@@ -74,6 +74,12 @@
       dest: "/home/{{ autostart_user }}/reload.html"
     notify: Restart getty
 
+  - name: Create frame.html
+    template:
+      src: templates/frame.html.j2
+      dest: "/home/{{ autostart_user }}/frame.html"
+    notify: Restart getty
+
   - name: Ensure getty service override dir exists
     file:
       path: /etc/systemd/system/getty@tty1.service.d/
