@@ -30,8 +30,8 @@ Add the host variables `pi_name` and `chrome_url` to a file named `hosts`. They 
 Please make a copy of group_vars/all-example to group_vars/all and change any variables to suit your needs. You should at least set the Ansible management user and the key.
 
 ```
-server_user_name: kiosk-admin
-server_user_password: raspberry
+ansible_user: kiosk-admin
+ansbile_ssh_pass: raspberry
 user_public_keys:
   - ~/.ssh/id_rsa.pub
 ```
@@ -43,7 +43,7 @@ Use the user "pi" with the default password that you set during setup.
 You may want to check that your Pis are responding on the ssh port:
 
 ```
-$ ansible all -m ping -u pi -k
+$ ansible all -m ping -e 'ansible_user=pi' -e 'ansible_ssh_pass=<password>'
 ```
 
 Execute the bootstrap.yml playbook to secure your Pis:
@@ -55,7 +55,7 @@ Execute the bootstrap.yml playbook to secure your Pis:
 - sets up ufw firewall
 
 ```
-$ ansible-playbook bootstrap.yml -e 'ansible_ssh_user=pi' -k
+$ ansible-playbook bootstrap.yml -e 'ansible_ssh_user=pi' -e 'ansible_ssh_pass=<password>'
 ```
 
 After running the bootstrap.yml playbook you can omit the username for Ansible and you won't be able to login with a password.
@@ -70,12 +70,20 @@ $ ansible-playbook apt.yml
 
 This does only a safe upgrade, no dist upgrade. The playbook checks if the server needs to be restarted.
 
-### 6. Setup the kiosk
+### 6. Install the Argon One Power Button & Fan Control
+
+Our CyberPis is encased in the Argon One Pi4 casing. This needs some software for fan-control and power button features. Run the argonone.yml playbook to install this. The playbook will reboot the server if the software is installed:
+
+```
+$ ansible-playbook argonone.yml
+```
+
+### 7. Setup the kiosk
 
 This is the main part. Use the kitteh.yml playbook to set up Chromium in kiosk mode and make it autostart:
 
 ```
-$ ansible-playbook kitteh.yml
+$ ansible-playbook cyberpi.yml
 ```
 
 This does the following:
@@ -87,7 +95,7 @@ This does the following:
 The playbook checks if X environment needs to be restarted if you changed the chrome_url variable.
 After changing HDMI modes the Pi will reboot.
 
-### 7. Get info (optional)
+### 8. Get info (optional)
 
 Use the info.yml playbook to get some info about your Pi flock:
 
@@ -95,7 +103,7 @@ Use the info.yml playbook to get some info about your Pi flock:
 $ ansible-playbook info.yml
 ```
 
-### 8. Log in with rdp client to inspect status of monitor
+### 9. Log in with rdp client to inspect status of monitor
 
 You can visually inspect what is being viewed on the screen by logging in with an RDP client, either the built-in client on Linux or for instance with xfreerdp.
 
