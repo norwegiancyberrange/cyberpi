@@ -78,22 +78,21 @@ Our CyberPis is encased in the Argon One Pi4 casing. This needs some software fo
 $ ansible-playbook argonone.yml
 ```
 
-### 7. Setup the kiosk
+### 7. Setup the pseudo-kiosk
 
-This is the main part. Use the kitteh.yml playbook to set up Chromium in kiosk mode and make it autostart:
+This is the main part. Use the cyberpi.yml playbook to set up Chromium in fullscreen mode and make it autostart:
 
 ```
 $ ansible-playbook cyberpi.yml
 ```
 
 This does the following:
-- set HDMI modes
 - install unclutter, MS core fonts, chromium-browser and various other required packages
 - disable screensaver
+- install xrdp
 - configure Chromium autostart
 
 The playbook checks if X environment needs to be restarted if you changed the chrome_url variable.
-After changing HDMI modes the Pi will reboot.
 
 ### 8. Get info (optional)
 

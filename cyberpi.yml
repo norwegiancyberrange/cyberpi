@@ -1,5 +1,5 @@
 ---
-- name: Set up kitteh client with target URL
+- name: Set up cyberpi client with target URL
   hosts: all
   become: yes
   become_user: root
@@ -22,12 +22,11 @@
       - chromium-browser
       - pulseaudio
       - xrdp
-      - cec-utils
 
   - name: Ensure we're using the correct ntp server
     lineinfile:
       path: /etc/systemd/timesyncd.conf
-      regex: "NTP="
+      regexp: "NTP="
       line: "NTP={{ ntpserver }}"
       state: present
     notify: Activate ntp
@@ -65,20 +64,8 @@
 
   - name: Copy background image
     copy:
-      src: files/background_ntnu.png
+      src: files/background.png
       dest: "/home/{{ autostart_user|quote }}/background.png"
-
-  - name: Create reload.html
-    template:
-      src: templates/reload.html.j2
-      dest: "/home/{{ autostart_user }}/reload.html"
-    notify: Restart getty
-
-  - name: Create frame.html
-    template:
-      src: templates/frame.html.j2
-      dest: "/home/{{ autostart_user }}/frame.html"
-    notify: Restart getty
 
   - name: Ensure getty service override dir exists
     file:
@@ -95,7 +82,7 @@
       - { line: "[Service]" }
       - { line: "ExecStart=" }
       - { line: "ExecStart=-/sbin/agetty --autologin {{ autostart_user }} --noclear %I $TERM" }
-    notify: Restart getty
+    notify: Restart session
   
   - name: Setup xrdp
     copy:
@@ -109,35 +96,20 @@
       groups: ssl-cert
       append: yes
 
-  - name: Set up cron job for switching monitor on every day
-    cron:
-      name: "Switch monitor on"
-      hour: "{{ power_on_hour }}"
-      minute: "{{ power_on_minute }}"
-      weekday: "{{ power_weekdays }}"
-      user: pi
-      job: "echo on 0 | cec-client -s -d 1 > /dev/null"
-
-  - name: Set up cron job for switching monitor off every day
-    cron:
-      name: "Switch monitor off"
-      hour: "{{ power_off_hour }}"
-      minute: "{{ power_off_minute }}"
-      weekday: "{{ power_weekdays }}"
-      user: pi
-      job: "echo standby 0 | cec-client -s -d 1 > /dev/null"
-        
   - name: Remove the nopassword-config for the pi user if it exists
     file:
       path: "/etc/sudoers.d/010_pi-nopasswd"
       state: absent
 
   handlers:
+  - name: Restart session
+    include: tasks/restart_session.yml
+
   - name: Restart getty
     include: tasks/restart_getty.yml
-  
+
   - name: Restart xrdp
     include: tasks/restart_xrdp.yml
-  
+
   - name: Activate ntp
     include: tasks/activate_ntp.yml
