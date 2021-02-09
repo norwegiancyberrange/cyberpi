@@ -1,6 +1,6 @@
-# Automate Chromium kiosk mode for Raspberry Pi with Ansible
+# Automate Chromium pseudo-kiosk mode for Raspberry Pi with Ansible
 
-This workbook will automate the setup of a Raspberry Pi for use as a simple and robust digital signage client. It is tweaked for use with Kitteh, but should be suitable for any web based system. This is a fork of [Pikiosk](https://github.com/chriso0710/pikiosk/), with a lot of things changed and/or removed. This was in turn forked from [5Minutes - Server Security Essentials](https://github.com/chhantyal/5minutes).
+This workbook will automate the setup of a Raspberry Pi for use as a simple and robust digital signage client. It is tweaked for use in Norwegian Cyber Range, but should be suitable for any web based system. This is a fork of [kittehpi](https://github.com/einarjh/kittehpi), which is a fork of [Pikiosk](https://github.com/chriso0710/pikiosk/), with a lot of things changed and/or removed. This was in turn forked from [5Minutes - Server Security Essentials](https://github.com/chhantyal/5minutes).
 
 ## Ansible automation
 
@@ -8,14 +8,14 @@ Start with a default Raspbian image with SSH enabled and the password set to som
 
 ### Basic requirements
 
-- Raspbian Lite
+- Raspberry Pi OS Lite
 - Ansible
 - Micro SD card reader/writer
 - Some sort of website to present your content
 
 ### 1. Setup SD card image
 
-Write the Raspbian Jessie image on to your SD card. [Etcher](https://etcher.io/) can do this, unless you know your way around dd.
+Write the Raspberry Pi OS lite image on to your SD card. [Etcher](https://etcher.io/) can do this, unless you know your way around dd.
 Connect your Pi to the network via ethernet cable, power it on and boot. Log on with username "pi" and password "raspberry", then run `sudo raspi-config` to change the password, and then go to `interfacing options` and enable the SSH server.
 
 If you create a valid `wpa_supplicant.conf` file and place in your boot partition the Pi copies it over using stock images (like Raspbian Jessie). The file disappears after it copies, but activates network on first boot so you should be able to find your Pi via nmap/ssh in your Wifi network.
