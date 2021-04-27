@@ -102,7 +102,18 @@ Use the info.yml playbook to get some info about your Pi flock:
 $ ansible-playbook info.yml
 ```
 
-### 9. Log in with rdp client to inspect status of monitor
+### 9. Install munin-node (optional)
+If you want, run the munin playbook to install and configure munin-node. Remeber to set this variable in your group_vars:
+```
+munin_server: ^123\.456\.789\.101$ # In the regex format needed for munin-node.conf
+```
+And the run the munin playbook:
+```
+$ ansible-playbook munin.yml
+```
+
+
+### 10. Log in with rdp client to inspect status of monitor
 
 You can visually inspect what is being viewed on the screen by logging in with an RDP client, either the built-in client on Linux or for instance with xfreerdp.
 
