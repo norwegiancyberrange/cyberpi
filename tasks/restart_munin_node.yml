@@ -1,0 +1,6 @@
+---
+- name: Restart munin-node
+  systemd:
+    name: munin-node.service
+    state: restarted
+    daemon_reload: yes

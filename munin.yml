@@ -1,0 +1,41 @@
+---
+- name: Install munin-node
+  hosts: all
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Install munin package
+      apt:
+        name: munin-node
+
+    - name: Set munin master
+      lineinfile:
+        path: /etc/munin/munin-node.conf
+        line: "allow {{ munin_server }}"
+        state: present
+      notify: Restart munin-node
+
+    - name: Set up firewall
+      ufw:
+        rule: allow
+        port: 4949
+
+    - name: Remove unnecessary plugins
+      vars:
+        plugin_folder: /etc/munin/plugins
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ plugin_folder }}/if_err_wlan0"
+        - "{{ plugin_folder }}/if_wlan0"
+        - "{{ plugin_folder }}/interrupts"
+        - "{{ plugin_folder }}/nfs4_client"
+        - "{{ plugin_folder }}/nfs_client"
+        - "{{ plugin_folder }}/vmstat"
+      notify: Restart munin-node
+
+  handlers:
+  - name: Restart munin-node
+    include: tasks/restart_munin_node.yml
