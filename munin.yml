@@ -31,6 +31,7 @@
         - "{{ plugin_folder }}/if_err_wlan0"
         - "{{ plugin_folder }}/if_wlan0"
         - "{{ plugin_folder }}/interrupts"
+        - "{{ plugin_folder }}/irqstats"
         - "{{ plugin_folder }}/nfs4_client"
         - "{{ plugin_folder }}/nfs_client"
         - "{{ plugin_folder }}/vmstat"
