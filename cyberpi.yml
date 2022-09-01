@@ -65,7 +65,7 @@
   - name: Copy background image
     copy:
       src: files/background_ntnu.png
-      dest: "/home/{{ autostart_user|quote }}/background_ntnu.png"
+      dest: "/home/{{ autostart_user|quote }}/background.png"
 
   - name: Ensure getty service override dir exists
     file:
