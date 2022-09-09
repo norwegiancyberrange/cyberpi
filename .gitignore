@@ -2,3 +2,4 @@
 hosts
 files/background_ntnu.png
 group_vars/all
+group_vars/topas.yaml
