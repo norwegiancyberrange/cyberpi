@@ -1,5 +1,5 @@
 ---
-- name: Kill pi session
+- name: Restart session
   command: killall -u {{ autostart_user }}
   notify: Restart getty
 
