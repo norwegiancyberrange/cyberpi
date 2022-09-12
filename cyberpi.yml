@@ -21,7 +21,25 @@
       - x11vnc
       - chromium-browser
       - pulseaudio
-      - xrdp
+
+  - name: Install specific xrdp version on debian 11
+    apt:
+      state: present
+      allow_downgrade: yes
+      name: xrdp=0.9.12-1.1
+    when: ansible_distribution == 'Debian' and ansible_distribution_version == '11'
+
+  - name: Install specific xrdp version on debian 10
+    apt:
+      state: present
+      name: xrdp
+    when: ansible_distribution == 'Debian' and ansible_distribution_version == '10'
+
+  - name: Debian 11 - Hold xrdp since newer versions has a bug
+    dpkg_selections:
+      name: xrdp
+      selection: hold
+    when: ansible_distribution == 'Debian' and ansible_distribution_version == '11'
 
   - name: Ensure we're using the correct ntp server
     lineinfile:
