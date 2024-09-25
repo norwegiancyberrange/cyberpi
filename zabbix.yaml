@@ -55,6 +55,17 @@
         line: "#Hostname=Zabbix server"
       notify: Restart zabbix-agent2
 
+    - name: Allow zabbix-agent2 in ufw
+      ufw:
+        rule: allow
+        port: 10050
+
+    - name: Download bcmstat
+      get_url:
+        url: 'https://raw.githubusercontent.com/MilhouseVH/bcmstat/master/bcmstat.sh'
+        dest: '/usr/local/bin/bcmstat'
+        mode: '0755'
+
   handlers:
   - name: Restart zabbix-agent2
     include: tasks/restart_zabbix-agent2.yml
