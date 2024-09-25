@@ -21,6 +21,7 @@
       - x11vnc
       - chromium-browser
       - pulseaudio
+      - xrdp
 
   - name: Install specific xrdp version on debian 11
     apt:
