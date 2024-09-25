@@ -112,8 +112,17 @@ And the run the munin playbook:
 $ ansible-playbook munin.yml
 ```
 
+### 10.
+If you want, run the zabbix playbook to install and configure zabbix-agent2. Remember to set this variable in your group_vars:
+```
+zabbix_servers: 192.168.0.10,192.168.0.11,2001:db8::10,2001:db8::11
+```
+And the run the zabbix playbook:
+```
+$ ansible-playbook zabbix.yml
+```
 
-### 10. Log in with rdp client to inspect status of monitor
+### 11. Log in with rdp client to inspect status of monitor
 
 You can visually inspect what is being viewed on the screen by logging in with an RDP client, either the built-in client on Linux or for instance with xfreerdp.
 
