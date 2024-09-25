@@ -1,6 +1,7 @@
 *.retry
 hosts
 files/background_ntnu.png
+files/ssh-keys/*
 group_vars/all
 group_vars/topas.yaml
 group_vars/zabbixskjerm.yaml
