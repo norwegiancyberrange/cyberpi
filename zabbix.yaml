@@ -1,0 +1,60 @@
+---
+- name: Install zabbix-agent2
+  hosts: all
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Download deb for Debian 10
+      ansible.builtin.get_url:
+        url: 'https://repo.zabbix.com/zabbix/7.0/raspbian/pool/main/z/zabbix-release/zabbix-release_7.0-2+debian10_all.deb'
+        dest: '/tmp/zabbix-release.deb'
+      when: ansible_distribution == 'Debian' and ansible_distribution_version == '10'
+
+    - name: Download deb for Debian 11
+      ansible.builtin.get_url:
+        url: 'https://repo.zabbix.com/zabbix/7.0/raspbian/pool/main/z/zabbix-release/zabbix-release_7.0-2+debian11_all.deb'
+        dest: '/tmp/zabbix-release.deb'
+      when: ansible_distribution == 'Debian' and ansible_distribution_version == '11'
+
+    - name: Download deb for Debian 12
+      ansible.builtin.get_url:
+        url: 'https://repo.zabbix.com/zabbix/7.0/raspbian/pool/main/z/zabbix-release/zabbix-release_7.0-2+debian12_all.deb'
+        dest: '/tmp/zabbix-release.deb'
+      when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '12'
+
+    - name: Install the zabbix-release deb
+      apt:
+        deb: '/tmp/zabbix-release.deb'
+        state: present
+
+    - name: Install zabbix-agent2
+      apt:
+        name: zabbix-agent2
+        state: present
+        update_cache: true
+
+    - name: Set Zabbix servers
+      lineinfile:
+        path: /etc/zabbix/zabbix_agent2.conf
+        regexp: "Server=127.0.0.1"
+        line: "Server={{ zabbix_servers }}"
+      notify: Restart zabbix-agent2
+
+    - name: Disable active agent
+      lineinfile:
+        path: /etc/zabbix/zabbix_agent2.conf
+        regexp: "ServerActive=127.0.0.1"
+        line: "#ServerActive=127.0.0.1"
+      notify: Restart zabbix-agent2
+
+    - name: Remove default hostname
+      lineinfile:
+        path: /etc/zabbix/zabbix_agent2.conf
+        regexp: "Hostname=Zabbix server"
+        line: "#Hostname=Zabbix server"
+      notify: Restart zabbix-agent2
+
+  handlers:
+  - name: Restart zabbix-agent2
+    include: tasks/restart_zabbix-agent2.yml
