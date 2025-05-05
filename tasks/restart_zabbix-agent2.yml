@@ -1,0 +1,6 @@
+---
+- name: Restart zabbix-agent2
+  systemd:
+    name: zabbix-agent2.service
+    state: restarted
+    daemon_reload: yes
