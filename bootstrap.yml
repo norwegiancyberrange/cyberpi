@@ -16,7 +16,8 @@
         state: present
 
     - name: Set Timezone
-      community.general.timezone: name={{ timezone }}
+      community.general.timezone:
+        name: "{{ timezone }}"
 
     - name: Setup Admin group
       group:
