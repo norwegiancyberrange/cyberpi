@@ -122,13 +122,13 @@
 
   handlers:
   - name: Restart session
-    include: tasks/restart_session.yml
+    include_tasks: tasks/restart_session.yml
 
   - name: Restart getty
-    include: tasks/restart_getty.yml
+    include_tasks: tasks/restart_getty.yml
 
   - name: Restart xrdp
-    include: tasks/restart_xrdp.yml
+    include_tasks: tasks/restart_xrdp.yml
 
   - name: Activate ntp
-    include: tasks/activate_ntp.yml
+    include_tasks: tasks/activate_ntp.yml
