@@ -68,4 +68,4 @@
 
   handlers:
   - name: Restart zabbix-agent2
-    include: tasks/restart_zabbix-agent2.yml
+    include_tasks: tasks/restart_zabbix-agent2.yml
