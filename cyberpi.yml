@@ -53,7 +53,7 @@
   - name: Ensure X starts on login
     lineinfile:
       path: /home/{{ autostart_user }}/.bash_profile
-      line: "exec startx"
+      line: "exec startx /etc/X11/xinit/xinitrc -- /etc/X11/xinit/xserverrc :0 vt1 -keeptty -logverbose -1"
       state: present
       create: yes
 
